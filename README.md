@@ -4,8 +4,8 @@
 This repository contains a landing page created with Lovable.
 
 ## Last Updated
-- Timestamp: 2025-03-21T20:35:26.693Z
-- Update ID: vxbm401a
+- Timestamp: 2025-03-21T20:35:50.903Z
+- Update ID: ed8vcaag
 
 ## Deployment
 This project is configured for deployment on Netlify.
