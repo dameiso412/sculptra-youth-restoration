@@ -1,7 +1,43 @@
-/* App.css - Updated: 2025-03-21T23:10:50.845Z */
+/* App.css with critical visibility styles */
 .App {
   width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* Override any potential CSS that might hide content */
+body, 
+#root, 
+.App, 
+.landing-page {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure layout structure */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  isolation: isolate;
+}
+
+/* Force all containers to be visible */
+.container, 
+.landing-header, 
+.features-section, 
+.cta-section, 
+.landing-footer {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
