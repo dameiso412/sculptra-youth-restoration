@@ -1,5 +1,23 @@
 // Deployment diagnostic utilities
 
+// Declare the window extensions for TypeScript
+declare global {
+  interface Window {
+    React?: any;
+    ReactDOM?: {
+      createRoot?: any;
+    };
+    __scriptStatus?: {
+      errors: any[];
+      mainLoaded?: boolean;
+      rootMounted?: boolean;
+      reactInitialized?: boolean;
+    };
+    __reactMounted?: () => void;
+    __pageLoadTime?: string;
+  }
+}
+
 /**
  * Checks for common deployment and rendering issues
  */
@@ -37,8 +55,9 @@ export function runDeploymentDiagnostics() {
   const landingElement = document.querySelector('.landing-page');
   console.log('Landing page component:', landingElement ? 'Found' : 'Not found');
   
-  // Check for errors
-  console.log('Recorded errors:', window.__scriptStatus?.errors || 'No error tracking available');
+  // Check for errors with proper type guards
+  const scriptStatus = window.__scriptStatus;
+  console.log('Recorded errors:', scriptStatus?.errors || 'No error tracking available');
   
   console.log('=== DEPLOYMENT DIAGNOSTICS COMPLETED ===');
   
@@ -50,7 +69,7 @@ export function runDeploymentDiagnostics() {
     landingFound: !!landingElement,
     stylesheetsCount: styleSheets.length,
     scriptsCount: scripts.length,
-    errors: window.__scriptStatus?.errors || []
+    errors: scriptStatus?.errors || []
   };
 }
 
@@ -60,7 +79,7 @@ export function runDeploymentDiagnostics() {
 export function attemptRenderingFix() {
   console.log('Attempting to fix rendering issues...');
   
-  // Force visibility on all key elements
+  // Force visibility on all key elements with proper TypeScript type casting
   const elements = [
     document.body,
     document.getElementById('root'),
@@ -70,9 +89,11 @@ export function attemptRenderingFix() {
   
   elements.forEach(el => {
     if (el) {
-      el.style.display = 'block';
-      el.style.visibility = 'visible';
-      el.style.opacity = '1';
+      // Use proper TypeScript cast for the HTMLElement to access style
+      const htmlEl = el as HTMLElement;
+      htmlEl.style.display = 'block';
+      htmlEl.style.visibility = 'visible';
+      htmlEl.style.opacity = '1';
     }
   });
   
