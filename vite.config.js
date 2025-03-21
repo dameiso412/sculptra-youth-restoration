@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './', // Ensure assets are loaded correctly in production
   plugins: [react()],
   server: {
     hmr: {
