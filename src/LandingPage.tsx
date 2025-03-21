@@ -1,6 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import './LandingPage.css';
 
+// Declare global types to ensure TypeScript recognizes window extensions
+declare global {
+  interface Window {
+    __reactMounted?: () => void;
+    __scriptStatus?: {
+      mainLoaded: boolean;
+      rootMounted: boolean;
+      reactInitialized: boolean;
+      errors: Array<{
+        message: string;
+        stack: string;
+        time: string;
+      }>;
+    };
+  }
+}
+
 function LandingPage() {
   const [mounted, setMounted] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
@@ -9,7 +26,7 @@ function LandingPage() {
   useEffect(() => {
     // Debug information
     console.log('LandingPage component mounted at', new Date().toISOString());
-    console.log('LandingPage timestamp: 2025-03-21T22-48-19-157Z');
+    console.log('LandingPage timestamp: 2025-03-21T23-00-38-684Z');
     
     // Mark as mounted
     setMounted(true);
@@ -29,7 +46,8 @@ function LandingPage() {
         });
         
         // Force visibility with !important flags
-        landingPageElement.setAttribute('style', 
+        // Use proper type assertion for HTMLElement
+        (landingPageElement as HTMLElement).setAttribute('style', 
           'display: block !important; ' +
           'visibility: visible !important; ' +
           'opacity: 1 !important; ' +
@@ -48,7 +66,8 @@ function LandingPage() {
         // Also check if children are visible
         const headerElement = document.querySelector('.landing-header');
         if (headerElement) {
-          headerElement.setAttribute('style', 'display: block !important; visibility: visible !important; opacity: 1 !important;');
+          // Use proper type assertion for HTMLElement
+          (headerElement as HTMLElement).setAttribute('style', 'display: block !important; visibility: visible !important; opacity: 1 !important;');
         }
         
         setContentVisible(true);
@@ -86,15 +105,17 @@ function LandingPage() {
     }, 2000);
     
     // Apply direct visibility corrections to body and root
+    // Use type assertions for all HTML elements
     document.body.style.display = 'block';
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
     
     const rootElement = document.getElementById('root');
     if (rootElement) {
-      rootElement.style.display = 'block';
-      rootElement.style.visibility = 'visible';
-      rootElement.style.opacity = '1';
+      // Use proper type assertion
+      (rootElement as HTMLElement).style.display = 'block';
+      (rootElement as HTMLElement).style.visibility = 'visible';
+      (rootElement as HTMLElement).style.opacity = '1';
     }
     
     return () => {
@@ -103,7 +124,7 @@ function LandingPage() {
     };
   }, []);
 
-  // This component was last updated at: 2025-03-21T22:48:19.157Z
+  // This component was last updated at: 2025-03-21T23:00:38.684Z
   return (
     <div 
       className="landing-page" 
@@ -116,13 +137,13 @@ function LandingPage() {
       }}
       data-mounted={mounted.toString()}
       data-visible={contentVisible.toString()}
-      data-timestamp="2025-03-21T22-48-19-157Z"
+      data-timestamp="2025-03-21T23-00-38-684Z"
     >
       <header className="landing-header">
         <div className="container">
           <h1>Welcome to Our Landing Page</h1>
-          <p className="subtitle">This page has been synced from Lovable at 2025-03-21T22-48-19-157Z</p>
-          <p className="update-id">Update ID: 9k19ekhq2xf</p>
+          <p className="subtitle">This page has been synced from Lovable at 2025-03-21T23-00-38-684Z</p>
+          <p className="update-id">Update ID: 2ha7p6ik86o</p>
           <p className="mount-status">{mounted ? '✅ Component Mounted' : '⏳ Mounting...'}</p>
           <p className="visibility-status">{contentVisible ? '✅ Content Visible' : '⏳ Fixing Visibility...'}</p>
         </div>
@@ -145,7 +166,7 @@ function LandingPage() {
                 <p>Optimized for speed and responsiveness on all devices.</p>
               </div>
               <div className="feature-card">
-                <h3>Updated: 2025-03-21T22-48-19-157Z</h3>
+                <h3>Updated: 2025-03-21T23-00-38-684Z</h3>
                 <p>We regularly improve our platform with new features.</p>
               </div>
             </div>
@@ -168,7 +189,7 @@ function LandingPage() {
             <h3 style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.5rem' }}>Page Information</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               <div style={{ padding: '0.25rem 0.5rem', background: '#e0f2fe', borderRadius: '0.25rem', fontSize: '0.75rem' }}>
-                Timestamp: 2025-03-21T22-48-19-157Z
+                Timestamp: 2025-03-21T23-00-38-684Z
               </div>
               <div style={{ padding: '0.25rem 0.5rem', background: '#e0f2fe', borderRadius: '0.25rem', fontSize: '0.75rem' }}>
                 Mounted: {mounted ? 'Yes' : 'No'}
@@ -183,7 +204,7 @@ function LandingPage() {
       <footer className="landing-footer">
         <div className="container">
           <p>&copy; 2025 - Created with Lovable</p>
-          <p className="debug-footer">Last updated at 2025-03-21T22-48-19-157Z</p>
+          <p className="debug-footer">Last updated at 2025-03-21T23-00-38-684Z</p>
         </div>
       </footer>
     </div>
