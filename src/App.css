@@ -5,11 +5,9 @@
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  position: relative;
-  z-index: 10;
 }
 
-/* Override any potential CSS that might hide content */
+/* Override any CSS that might hide content */
 body, 
 #root, 
 .App, 
@@ -19,7 +17,6 @@ body,
   opacity: 1 !important;
 }
 
-/* Ensure layout structure */
 body {
   margin: 0;
   padding: 0;
@@ -28,16 +25,4 @@ body {
 
 #root {
   min-height: 100vh;
-  isolation: isolate;
-}
-
-/* Force all containers to be visible */
-.container, 
-.landing-header, 
-.features-section, 
-.cta-section, 
-.landing-footer {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
