@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-// Augment the Window interface to include our custom properties
+// Define the window extensions globally to ensure TypeScript recognizes them
 interface Window {
   __reactMounted?: () => void;
   __pageLoadTime?: string;
@@ -20,7 +20,7 @@ interface Window {
   };
 }
 
-// Declare global namespace for these properties to be accessible globally
+// Make these types available in the global namespace
 declare global {
   interface Window {
     __reactMounted?: () => void;
