@@ -1,15 +1,14 @@
 
-import LandingPage from './LandingPage';
-import './App.css';
+import './App.css'
+import LandingPage from './LandingPage'
 
 function App() {
-  // Updated at: 2025-03-21T20:06:00.379Z
-  // Update ID: 6i8zhpjh
+  // This component was last updated at: 2025-03-21T20:26:14.294Z
   return (
     <div className="App">
       <LandingPage />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
