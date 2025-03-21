@@ -1,7 +1,7 @@
-
+/* App.css - Updated: 2025-03-21T23:10:50.845Z */
 .App {
   width: 100%;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-
-/* Last updated: 2025-03-21T23:10:50.845Z */
