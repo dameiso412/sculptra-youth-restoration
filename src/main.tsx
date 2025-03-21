@@ -3,28 +3,6 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
-// Global type declarations for window objects
-declare global {
-  interface Window {
-    __reactMounted?: () => void;
-    __pageLoadTime?: string;
-    __scriptStatus?: {
-      mainLoaded: boolean;
-      rootMounted: boolean;
-      reactInitialized: boolean;
-      errors: Array<{
-        message: string;
-        stack: string;
-        time: string;
-      }>;
-    };
-    React?: any;
-    ReactDOM?: {
-      createRoot?: any;
-    };
-  }
-}
-
 // Immediate load indicator
 console.log('main.tsx executing at', new Date().toISOString());
 
@@ -102,12 +80,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // Mark main script as loaded in global status tracker
-  if (typeof window !== 'undefined' && window.__scriptStatus) {
-    window.__scriptStatus.mainLoaded = true;
+  if (typeof window !== 'undefined') {
+    if (!window.__scriptStatus) {
+      window.__scriptStatus = {
+        mainLoaded: true,
+        rootMounted: false,
+        reactInitialized: false,
+        errors: []
+      };
+    } else {
+      window.__scriptStatus.mainLoaded = true;
+    }
   }
 });
 
 // Add window error handler for uncaught exceptions
 window.addEventListener('error', (event) => {
   console.error('Global error caught:', event.error || event.message);
+  
+  // Log error to our custom tracker if available
+  if (typeof window !== 'undefined' && window.__scriptStatus) {
+    window.__scriptStatus.errors.push({
+      message: event.message,
+      stack: event.error?.stack || '',
+      time: new Date().toISOString()
+    });
+  }
 });
