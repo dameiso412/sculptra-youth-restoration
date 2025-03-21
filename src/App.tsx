@@ -14,14 +14,6 @@ interface ScriptStatus {
   }>;
 }
 
-declare global {
-  interface Window {
-    __reactMounted?: () => void;
-    __pageLoadTime?: string;
-    __scriptStatus?: ScriptStatus;
-  }
-}
-
 function App() {
   // State to track visibility and mounting
   const [isMounted, setIsMounted] = useState(false);
@@ -143,6 +135,7 @@ function App() {
       }}
       data-mounted={isMounted ? 'true' : 'false'}
       data-visibility-checked={visibilityChecked ? 'true' : 'false'}
+      data-timestamp="${updateTimestamp}"
     >
       {/* Loading indicator inside App as backup */}
       {!visibilityChecked && (
