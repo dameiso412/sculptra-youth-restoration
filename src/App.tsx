@@ -1,51 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import LandingPage from './LandingPage';
 import './App.css';
-
-// Import LandingPage component - This is the main content that will be displayed
-// If this import fails, a fallback component will be rendered
-let LandingPage: React.FC;
-try {
-  // Dynamic import attempt with fallback
-  LandingPage = require('./LandingPage').default;
-} catch (error) {
-  console.error('Failed to import LandingPage component:', error);
-  // Fallback implementation if the import fails
-  LandingPage = () => (
-    <div style={{ 
-      padding: '40px', 
-      maxWidth: '800px', 
-      margin: '0 auto',
-      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    }}>
-      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Welcome to Our Landing Page</h1>
-      <p style={{ fontSize: '1.2rem', lineHeight: 1.6 }}>
-        The main landing page component could not be loaded. 
-        This is a fallback component to ensure something is displayed.
-      </p>
-      <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#f9fafb', borderRadius: '8px' }}>
-        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Features:</h2>
-        <ul style={{ paddingLeft: '1.5rem' }}>
-          <li style={{ marginBottom: '0.5rem' }}>Feature 1 Description</li>
-          <li style={{ marginBottom: '0.5rem' }}>Feature 2 Description</li>
-          <li style={{ marginBottom: '0.5rem' }}>Feature 3 Description</li>
-        </ul>
-      </div>
-      <div style={{ marginTop: '2rem' }}>
-        <button style={{ 
-          background: '#3b82f6', 
-          color: 'white', 
-          padding: '0.75rem 1.5rem', 
-          border: 'none', 
-          borderRadius: '0.375rem',
-          fontSize: '1rem',
-          cursor: 'pointer'
-        }}>
-          Get Started
-        </button>
-      </div>
-    </div>
-  );
-}
 
 // Type definitions for our global window extensions
 interface ScriptStatus {
@@ -59,63 +14,103 @@ interface ScriptStatus {
   }>;
 }
 
-// Make these types available in the global namespace
 declare global {
   interface Window {
-    __scriptStatus?: ScriptStatus;
     __reactMounted?: () => void;
     __pageLoadTime?: string;
+    __scriptStatus?: ScriptStatus;
   }
 }
 
 function App() {
+  // State to track visibility and mounting
   const [isMounted, setIsMounted] = useState(false);
+  const [visibilityChecked, setVisibilityChecked] = useState(false);
   
-  // Setup effect for tracking mounting and diagnostics
+  // Verbose logging for debugging deployment issues
   useEffect(() => {
-    console.log('✅ App component mounted at', new Date().toISOString());
+    console.log('App component mounted with timestamp: 2025-03-21T23:50:46.742Z');
     setIsMounted(true);
     
-    // Notify parent window that React has mounted (used for error handling)
+    // Notify parent window that React has mounted
     if (typeof window !== 'undefined' && window.__reactMounted && typeof window.__reactMounted === 'function') {
       window.__reactMounted();
     }
     
-    // Check and log DOM structure for diagnostic purposes
+    // Log DOM structure and critical elements
     const rootEl = document.getElementById('root');
     if (rootEl) {
-      console.log('✅ Root element found with children:', rootEl.childNodes.length);
+      console.log('Root element:', {
+        id: rootEl.id,
+        children: rootEl.childNodes.length,
+        style: window.getComputedStyle(rootEl)
+      });
     } else {
-      console.error('❌ Root element not found in DOM');
+      console.log('Root element: NOT FOUND');
     }
     
     // Force visibility check and correction
     const checkAndFixVisibility = () => {
-      // Try to find the App element
       const appEl = document.querySelector('.App');
+      const landingEl = document.querySelector('.landing-page');
+      
+      console.log('Visibility check at', new Date().toISOString());
+      
       if (appEl) {
         const appStyle = window.getComputedStyle(appEl);
+        console.log('App element styles:', {
+          display: appStyle.display,
+          visibility: appStyle.visibility,
+          opacity: appStyle.opacity
+        });
+        
         // Force visibility if needed with proper type casting
-        if (appStyle.display === 'none' || appStyle.visibility === 'hidden') {
-          console.log('🔧 Forcing App element visibility');
+        if (appStyle.display === 'none' || appStyle.visibility === 'hidden' || appStyle.opacity === '0') {
+          console.log('Forcing App element visibility');
           (appEl as HTMLElement).style.display = 'block';
           (appEl as HTMLElement).style.visibility = 'visible';
           (appEl as HTMLElement).style.opacity = '1';
+          (appEl as HTMLElement).style.width = '100%';
+          (appEl as HTMLElement).style.minHeight = '100vh';
         }
       }
+      
+      if (landingEl) {
+        const landingStyle = window.getComputedStyle(landingEl);
+        console.log('Landing page styles:', {
+          display: landingStyle.display,
+          visibility: landingStyle.visibility,
+          opacity: landingStyle.opacity
+        });
+        
+        // Force visibility if needed with proper type casting
+        if (landingStyle.display === 'none' || landingStyle.visibility === 'hidden' || landingStyle.opacity === '0') {
+          console.log('Forcing landing page element visibility');
+          (landingEl as HTMLElement).style.display = 'block';
+          (landingEl as HTMLElement).style.visibility = 'visible';
+          (landingEl as HTMLElement).style.opacity = '1';
+          (landingEl as HTMLElement).style.width = '100%';
+          (landingEl as HTMLElement).style.minHeight = '100vh';
+        }
+      }
+      
+      setVisibilityChecked(true);
     };
     
-    // Run visibility check after mounting
+    // Run visibility check immediately
     checkAndFixVisibility();
     
     // And also after a delay to catch any late CSS application
     const visibilityTimer = setTimeout(checkAndFixVisibility, 500);
     
-    // Initialize window.__scriptStatus for tracking
+    // Also run checks when window is fully loaded
+    window.addEventListener('load', checkAndFixVisibility);
+    
+    // Initialize or update window.__scriptStatus
     if (typeof window !== 'undefined') {
       if (!window.__scriptStatus) {
         window.__scriptStatus = {
-          mainLoaded: true,
+          mainLoaded: false,
           rootMounted: true,
           reactInitialized: true,
           errors: []
@@ -128,10 +123,11 @@ function App() {
     
     return () => {
       clearTimeout(visibilityTimer);
+      window.removeEventListener('load', checkAndFixVisibility);
     };
   }, []);
 
-  // Render the App with explicit inline styles for guaranteed visibility
+  // Render with explicit inline styles for guaranteed visibility
   return (
     <div 
       className="App" 
@@ -140,11 +136,50 @@ function App() {
         minHeight: '100vh', 
         display: 'block', 
         visibility: 'visible', 
-        opacity: 1
+        opacity: 1,
+        position: 'relative',
+        zIndex: 10,
+        overflow: 'auto'
       }}
       data-mounted={isMounted ? 'true' : 'false'}
+      data-visibility-checked={visibilityChecked ? 'true' : 'false'}
     >
+      {/* Loading indicator inside App as backup */}
+      {!visibilityChecked && (
+        <div style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          bottom: 0, 
+          background: 'white',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 100
+        }}>
+          <p>Checking content visibility...</p>
+        </div>
+      )}
+      
       <LandingPage />
+      
+      {/* Add a tiny debug indicator in corner */}
+      <div style={{ 
+        position: 'fixed', 
+        bottom: 5, 
+        right: 5, 
+        background: '#4c1d95',
+        color: 'white',
+        padding: '2px 6px',
+        fontSize: '10px',
+        borderRadius: '4px',
+        opacity: 0.6,
+        zIndex: 9999
+      }}>
+        React Mounted
+      </div>
     </div>
   );
 }
