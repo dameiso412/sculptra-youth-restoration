@@ -4,8 +4,14 @@
 This repository contains a landing page created with Lovable.
 
 ## Last Updated
-- Timestamp: 2025-03-21T19:42:52.016Z
-- Update ID: u7loeo9y
+- Timestamp: 2025-03-21T20:06:00.379Z
+- Update ID: bi2ecl66
 
 ## Deployment
 This project is configured for deployment on Netlify.
+
+## Troubleshooting
+If the page renders without styles, try the following:
+1. Ensure all CSS files are being properly loaded
+2. Check that the build process is correctly processing Tailwind classes
+3. Verify that the index.html file references all required stylesheets
