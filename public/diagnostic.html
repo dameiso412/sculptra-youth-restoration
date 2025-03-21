@@ -14,6 +14,37 @@
     .diagnostic { margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px; }
     .diagnostic pre { background: #f1f1f1; padding: 10px; border-radius: 4px; overflow: auto; }
   </style>
+  <script>
+    // TypeScript definitions
+    // These are for documentation only and don't affect runtime
+    /**
+     * @typedef {Object} DiagnosticResult
+     * @property {string} userAgent - Browser user agent
+     * @property {boolean} rootExists - Whether root element exists
+     * @property {number} elementsCount - Number of HTML elements
+     * @property {number} scriptsCount - Number of scripts loaded
+     * @property {string} currentPath - Current path
+     */
+
+    // Global window namespace declaration for TypeScript
+    // This is commented out as it's just for documentation and the runtime JS doesn't need it
+    /*
+    interface Window {
+      __reactMounted?: () => void;
+      __pageLoadTime?: string;
+      __scriptStatus?: {
+        mainLoaded: boolean;
+        rootMounted: boolean;
+        reactInitialized: boolean;
+        errors: Array<{
+          message: string;
+          stack: string;
+          time: string;
+        }>;
+      };
+    }
+    */
+  </script>
 </head>
 <body>
   <div class="container">
@@ -21,7 +52,7 @@
     <p>This is a direct HTML file to verify that static file serving is working correctly on your Netlify deployment.</p>
     
     <div class="info">
-      <p><strong>Last updated:</strong> 2025-03-21T22:31:55.738Z</p>
+      <p><strong>Last updated:</strong> 2025-03-21T22:47:37.798Z</p>
       <p><strong>Repository:</strong> dameiso412/sculptra-youth-restoration</p>
     </div>
     
@@ -40,6 +71,8 @@
   <script>
     function runDiagnostics() {
       const output = document.getElementById('diagnostic-output');
+      if (!output) return;
+      
       output.innerHTML = '<p>Running diagnostics...</p>';
       
       let results = '<h3>Environment Check</h3>';
@@ -66,10 +99,12 @@
         results += '</ul>';
       } catch (error) {
         results += '<h3>Error During Diagnostics</h3>';
-        results += '<pre>' + error.toString() + '</pre>';
+        results += '<pre>' + (error instanceof Error ? error.toString() : String(error)) + '</pre>';
       }
       
-      output.innerHTML = results;
+      if (output) {
+        output.innerHTML = results;
+      }
     }
     
     // Auto-run diagnostics after 1 second
