@@ -1,0 +1,41 @@
+# netlify.toml - Configuration for Netlify deployment
+[build]
+  # Directory to publish (relative to root of your repo)
+  publish = "dist"
+  
+  # Default build command
+  command = "npm run build"
+
+# Redirect and rewrite rules to handle SPA routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Forward 404s to index.html for single-page application
+[[redirects]]
+  from = "/404"
+  to = "/index.html"
+  status = 200
+
+# Headers for security and caching
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Cache-Control = "public, max-age=3600"
+    
+# Environment variables
+[build.environment]
+  # Force visibility for components
+  VITE_FORCE_VISIBILITY = "true"
+  NODE_VERSION = "16"
+
+# Post processing to add build diagnostic information
+[build.processing]
+  skip_processing = false
+
+# Add build plugins to help diagnose issues
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
