@@ -1,55 +1,113 @@
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
-// Function to handle errors during render
-function handleRenderError(error: Error) {
-  console.error('Error rendering React application:', error);
-  const rootElement = document.getElementById('root');
-  if (rootElement) {
-    rootElement.innerHTML = `
-      <div style="padding: 20px; font-family: sans-serif;">
-        <h2 style="color: #d32f2f;">Rendering Error</h2>
-        <p>There was an error rendering the application:</p>
-        <pre style="background: #f5f5f5; padding: 10px; overflow: auto;">${error.message}
-${error.stack}</pre>
-      </div>
-    `;
+// Global type declarations for window objects
+declare global {
+  interface Window {
+    __reactMounted?: () => void;
+    __pageLoadTime?: string;
+    __scriptStatus?: {
+      mainLoaded: boolean;
+      rootMounted: boolean;
+      reactInitialized: boolean;
+      errors: Array<{
+        message: string;
+        stack: string;
+        time: string;
+      }>;
+    };
+    React?: any;
+    ReactDOM?: {
+      createRoot?: any;
+    };
   }
 }
 
-// Ensure the DOM is fully loaded before mounting React
+// Immediate load indicator
+console.log('main.tsx executing at', new Date().toISOString());
+
+// DOM content loaded check
 document.addEventListener('DOMContentLoaded', () => {
-  try {
-    console.log('DOM loaded, mounting React application...');
-    const rootElement = document.getElementById('root');
+  console.log('DOM fully loaded and parsed');
+  
+  // Get the root element for React mounting
+  const rootElement = document.getElementById('root');
+  
+  // If no root element, create one
+  if (!rootElement) {
+    console.error('No #root element found in the document!');
     
-    if (!rootElement) {
-      throw new Error('Failed to find the root element');
-    }
+    // Create the root element since it doesn't exist
+    const newRoot = document.createElement('div');
+    newRoot.id = 'root';
+    document.body.appendChild(newRoot);
     
-    // Log root element properties
-    console.log('Root element found:', {
-      id: rootElement.id,
-      tagName: rootElement.tagName,
-      childNodes: rootElement.childNodes.length
-    });
+    console.log('Created new #root element as fallback');
     
-    const root = createRoot(rootElement);
-    
-    // Wrap the render in a try-catch for better error visibility
+    // Try mounting React on the newly created root
     try {
-      root.render(<App />);
-      console.log('React application mounted successfully');
-    } catch (renderError) {
-      console.error('Error during render:', renderError);
-      handleRenderError(renderError instanceof Error ? renderError : new Error(String(renderError)));
+      const root = createRoot(newRoot);
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+      console.log('React mounted on fallback root element');
+      // Notify parent window that React has mounted (used by the error handling in index.html)
+      if (typeof window !== 'undefined' && window.__reactMounted) {
+        window.__reactMounted();
+      }
+    } catch (error) {
+      console.error('Failed to render React on fallback root:', error);
+      
+      // Show visible error on the page
+      newRoot.innerHTML = `
+        <div style="font-family: sans-serif; padding: 20px; max-width: 800px; margin: 0 auto;">
+          <h2 style="color: #e11d48;">React Rendering Error</h2>
+          <p>There was an error rendering the React application:</p>
+          <pre style="background: #f1f1f1; padding: 10px; border-radius: 4px; overflow: auto;">${error}</pre>
+          <p>Please check the console for more details.</p>
+        </div>
+      `;
     }
-  } catch (error) {
-    console.error('Error during React initialization:', error);
-    handleRenderError(error instanceof Error ? error : new Error(String(error)));
+  } else {
+    // Normal initialization with enhanced error handling
+    try {
+      const root = createRoot(rootElement);
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+      console.log('React mounted successfully on existing root element');
+      // Notify parent window that React has mounted (used by the error handling in index.html)
+      if (typeof window !== 'undefined' && window.__reactMounted) {
+        window.__reactMounted();
+      }
+    } catch (error) {
+      console.error('Failed to render React on existing root:', error);
+      
+      // Show visible error on the page
+      rootElement.innerHTML = `
+        <div style="font-family: sans-serif; padding: 20px; max-width: 800px; margin: 0 auto;">
+          <h2 style="color: #e11d48;">React Rendering Error</h2>
+          <p>There was an error rendering the React application:</p>
+          <pre style="background: #f1f1f1; padding: 10px; border-radius: 4px; overflow: auto;">${error}</pre>
+          <p>Please check the console for more details.</p>
+        </div>
+      `;
+    }
+  }
+  
+  // Mark main script as loaded in global status tracker
+  if (typeof window !== 'undefined' && window.__scriptStatus) {
+    window.__scriptStatus.mainLoaded = true;
   }
 });
 
-// Log that the script was loaded
-console.log('main.tsx script loaded at', new Date().toISOString());
+// Add window error handler for uncaught exceptions
+window.addEventListener('error', (event) => {
+  console.error('Global error caught:', event.error || event.message);
+});
