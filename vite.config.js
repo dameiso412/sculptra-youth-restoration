@@ -13,6 +13,9 @@ export default defineConfig({
   },
   esbuild: {
     logLevel: 'info',
+    logOverride: {
+      'this-is-undefined-in-esm': 'silent'
+    },
     tsconfigRaw: {
       compilerOptions: {
         jsx: 'react-jsx',
