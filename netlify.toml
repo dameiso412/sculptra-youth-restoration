@@ -34,6 +34,7 @@
   # Ensure TypeScript doesn't fail on strict checks
   SKIP_PREFLIGHT_CHECK = "true"
   TSC_COMPILE_ON_ERROR = "true"
+  TS_NODE_TRANSPILE_ONLY = "true"
 
 # Post processing to add build diagnostic information
 [build.processing]
