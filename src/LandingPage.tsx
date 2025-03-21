@@ -9,7 +9,7 @@ function LandingPage() {
   useEffect(() => {
     // Debug information
     console.log('LandingPage component mounted at', new Date().toISOString());
-    console.log('LandingPage timestamp: 2025-03-21T22-31-55-738Z');
+    console.log('LandingPage timestamp: 2025-03-21T22-47-37-798Z');
     
     // Mark as mounted
     setMounted(true);
@@ -103,7 +103,7 @@ function LandingPage() {
     };
   }, []);
 
-  // This component was last updated at: 2025-03-21T22:31:55.738Z
+  // This component was last updated at: 2025-03-21T22:47:37.798Z
   return (
     <div 
       className="landing-page" 
@@ -116,13 +116,13 @@ function LandingPage() {
       }}
       data-mounted={mounted.toString()}
       data-visible={contentVisible.toString()}
-      data-timestamp="2025-03-21T22-31-55-738Z"
+      data-timestamp="2025-03-21T22-47-37-798Z"
     >
       <header className="landing-header">
         <div className="container">
           <h1>Welcome to Our Landing Page</h1>
-          <p className="subtitle">This page has been synced from Lovable at 2025-03-21T22-31-55-738Z</p>
-          <p className="update-id">Update ID: 6xvegh9jx9r</p>
+          <p className="subtitle">This page has been synced from Lovable at 2025-03-21T22-47-37-798Z</p>
+          <p className="update-id">Update ID: 77zousv9qr</p>
           <p className="mount-status">{mounted ? '✅ Component Mounted' : '⏳ Mounting...'}</p>
           <p className="visibility-status">{contentVisible ? '✅ Content Visible' : '⏳ Fixing Visibility...'}</p>
         </div>
@@ -145,7 +145,7 @@ function LandingPage() {
                 <p>Optimized for speed and responsiveness on all devices.</p>
               </div>
               <div className="feature-card">
-                <h3>Updated: 2025-03-21T22-31-55-738Z</h3>
+                <h3>Updated: 2025-03-21T22-47-37-798Z</h3>
                 <p>We regularly improve our platform with new features.</p>
               </div>
             </div>
@@ -168,7 +168,7 @@ function LandingPage() {
             <h3 style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.5rem' }}>Page Information</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               <div style={{ padding: '0.25rem 0.5rem', background: '#e0f2fe', borderRadius: '0.25rem', fontSize: '0.75rem' }}>
-                Timestamp: 2025-03-21T22-31-55-738Z
+                Timestamp: 2025-03-21T22-47-37-798Z
               </div>
               <div style={{ padding: '0.25rem 0.5rem', background: '#e0f2fe', borderRadius: '0.25rem', fontSize: '0.75rem' }}>
                 Mounted: {mounted ? 'Yes' : 'No'}
@@ -183,7 +183,7 @@ function LandingPage() {
       <footer className="landing-footer">
         <div className="container">
           <p>&copy; 2025 - Created with Lovable</p>
-          <p className="debug-footer">Last updated at 2025-03-21T22-31-55-738Z</p>
+          <p className="debug-footer">Last updated at 2025-03-21T22-47-37-798Z</p>
         </div>
       </footer>
     </div>
