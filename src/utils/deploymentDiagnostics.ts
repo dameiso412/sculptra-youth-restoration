@@ -1,21 +1,26 @@
 // Deployment diagnostic utilities
 
+// Define typed interfaces for global objects
+interface ScriptStatus {
+  mainLoaded: boolean;
+  rootMounted: boolean;
+  reactInitialized: boolean;
+  errors: Array<{
+    message: string;
+    stack: string;
+    time: string;
+  }>;
+}
+
 // Declare the window extensions for TypeScript
-declare global {
-  interface Window {
-    React?: any;
-    ReactDOM?: {
-      createRoot?: any;
-    };
-    __scriptStatus?: {
-      errors: any[];
-      mainLoaded?: boolean;
-      rootMounted?: boolean;
-      reactInitialized?: boolean;
-    };
-    __reactMounted?: () => void;
-    __pageLoadTime?: string;
-  }
+interface Window {
+  React?: any;
+  ReactDOM?: {
+    createRoot?: any;
+  };
+  __scriptStatus?: ScriptStatus;
+  __reactMounted?: () => void;
+  __pageLoadTime?: string;
 }
 
 /**
