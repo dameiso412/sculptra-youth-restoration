@@ -17,6 +17,16 @@
       window.__reactMounted = function() {
         console.log('React mounted callback triggered at', new Date().toISOString());
       };
+      
+      // Critical error detection - if nothing renders, display a fallback
+      setTimeout(function() {
+        // Check if the app has content after 3 seconds
+        var rootEl = document.getElementById('root');
+        if (rootEl && (!rootEl.childNodes || rootEl.childNodes.length === 0)) {
+          console.error('No content rendered in root element after 3s - showing fallback');
+          rootEl.innerHTML = '<div style="padding: 20px; font-family: sans-serif;"><h2>Loading Failed</h2><p>The application failed to load. This could be due to missing files or initialization errors.</p><p>Please check the console for errors.</p></div>';
+        }
+      }, 3000);
     </script>
   </head>
   <body>
