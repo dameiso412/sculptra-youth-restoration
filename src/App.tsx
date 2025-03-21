@@ -14,6 +14,14 @@ interface ScriptStatus {
   }>;
 }
 
+declare global {
+  interface Window {
+    __reactMounted?: () => void;
+    __pageLoadTime?: string;
+    __scriptStatus?: ScriptStatus;
+  }
+}
+
 function App() {
   // State to track visibility and mounting
   const [isMounted, setIsMounted] = useState(false);
@@ -21,7 +29,7 @@ function App() {
   
   // Verbose logging for debugging deployment issues
   useEffect(() => {
-    console.log('App component mounted with timestamp: 2025-03-21T23:10:50.845Z');
+    console.log('App component mounted with timestamp: 2025-03-21T23:31:36.198Z');
     setIsMounted(true);
     
     // Notify parent window that React has mounted
@@ -135,7 +143,6 @@ function App() {
       }}
       data-mounted={isMounted ? 'true' : 'false'}
       data-visibility-checked={visibilityChecked ? 'true' : 'false'}
-      data-timestamp="${updateTimestamp}"
     >
       {/* Loading indicator inside App as backup */}
       {!visibilityChecked && (
