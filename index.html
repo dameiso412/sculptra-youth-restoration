@@ -23,8 +23,26 @@
         // Check if the app has content after 3 seconds
         var rootEl = document.getElementById('root');
         if (rootEl && (!rootEl.childNodes || rootEl.childNodes.length === 0)) {
-          console.error('No content rendered in root element after 3s - showing fallback');
-          rootEl.innerHTML = '<div style="padding: 20px; font-family: sans-serif;"><h2>Loading Failed</h2><p>The application failed to load. This could be due to missing files or initialization errors.</p><p>Please check the console for errors.</p></div>';
+          console.error('🔴 CRITICAL: No content rendered in root element after 3s - showing fallback error');
+          rootEl.innerHTML = '<div style="padding: 20px; font-family: sans-serif;"><h2>Loading Failed</h2><p>The application failed to load. This could be due to missing critical files like main.tsx or App.tsx.</p><p>Please check that these files exist in the repository.</p><p>Timestamp: ' + new Date().toISOString() + '</p></div>';
+          
+          // Add diagnostic information directly on the page
+          var diagnosticDiv = document.createElement('div');
+          diagnosticDiv.style.margin = '20px';
+          diagnosticDiv.style.padding = '15px';
+          diagnosticDiv.style.border = '1px solid #ddd';
+          diagnosticDiv.style.borderRadius = '5px';
+          diagnosticDiv.style.backgroundColor = '#f5f5f5';
+          
+          diagnosticDiv.innerHTML = '<h3>Diagnostic Information</h3>' +
+            '<p><strong>Required files:</strong></p>' +
+            '<ul>' +
+            '<li>src/main.tsx - React initialization file</li>' +
+            '<li>src/App.tsx - Main React component</li>' +
+            '</ul>' +
+            '<p>If these files are missing, React cannot initialize properly.</p>';
+            
+          rootEl.appendChild(diagnosticDiv);
         }
       }, 3000);
     </script>
