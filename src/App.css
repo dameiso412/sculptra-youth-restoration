@@ -1,28 +1,7 @@
-/* App.css with critical visibility styles */
+
 .App {
   width: 100%;
   min-height: 100vh;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
 
-/* Override any CSS that might hide content */
-body, 
-#root, 
-.App, 
-.landing-page {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-}
-
-#root {
-  min-height: 100vh;
-}
+/* Last updated: 2025-03-22T00:36:11.359Z */
